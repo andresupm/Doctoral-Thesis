@@ -1,0 +1,22 @@
+nsd:
+  nsd:
+  - description: NS consisting of a single KNF ToD_knf connected to mgmt network
+    designer: UPM
+    df:
+    - id: default-df
+      vnf-profile:
+      - id: ToD
+        virtual-link-connectivity:
+        - constituent-cpd-id:
+          - constituent-base-element-id: ToD
+            constituent-cpd-id: mgmt-ext
+          virtual-link-profile-id: mgmtnet
+        vnfd-id: ToD_knf
+    id: ToD_ns
+    name: ToD_ns
+    version: 1.0
+    virtual-link-desc:
+    - id: mgmtnet
+      mgmt-network: true
+    vnfd-id:
+    - ToD_knf        

@@ -1,0 +1,18 @@
+vnfd:
+  description: KNF with single KDU using a helm-chart for iperf3 version 1.1
+  df:
+  - id: default-df
+  ext-cpd:
+  - id: mgmt-ext
+    k8s-cluster-net: mgmtnet
+  id: ToD_knf
+  k8s-cluster:
+    nets:
+    - id: mgmtnet
+  kdu:
+  - name: ToD
+    helm-chart: eugen/iperf3
+  mgmt-cp: mgmt-ext
+  product-name: ToD_knf
+  provider: UPM
+  version: 1.1

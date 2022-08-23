@@ -1,0 +1,22 @@
+nsd:
+  nsd:
+  - description: NS consisting of a KNF open5gs_knf connected to mgmt network
+    designer: UPM
+    df:
+    - id: default-df
+      vnf-profile:
+      - id: orc8r
+        virtual-link-connectivity:
+        - constituent-cpd-id:
+          - constituent-base-element-id: open5gs
+            constituent-cpd-id: mgmt-ext
+          virtual-link-profile-id: mgmtnet
+        vnfd-id: open5gs_knf
+    id: open5gs_ns
+    name: open5gs_ns
+    version: 1.0
+    virtual-link-desc:
+    - id: mgmtnet
+      mgmt-network: true
+    vnfd-id:
+    - open5gs_knf

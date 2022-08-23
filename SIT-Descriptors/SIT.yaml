@@ -1,0 +1,125 @@
+SIT:
+    - name: MVNO
+      description: NSaaS provided to the MVNO
+      provider: MNO
+      version: 1.0
+      NetworkSlice:
+        mgmt_type:
+          - type: srv-level-mgmt        # management capabilities selected by the vertical
+            orch:                       # info of the NFVO
+              - name: osm              
+              - nsd-id: management-service
+              - url: http://osm:8080
+            sdn:                        # info of the SDN controller
+              - name: ryu
+              - nsd-id: management-service
+              - url: http://ryu:6443
+            smf-stack:                  # info of the SMF stack
+              - name: smf-MVNO
+              - nsd-id: management-service
+              - url: http://smf-MVNO:8787
+        nsd:                             # ETSI-compliant descriptors (SOL06)
+          - nsd-id: service-ToD
+            external-links:              # external endpoints to connect NSDs
+              - ext-id: ToD_internet
+              - ext-id: ToD_5G
+            constituent_vnfd_            # List of VNFs to reference from the NSD
+              - vnfd:
+                - id: ToD-EU 
+                - type: 2						 
+              - vnfd:
+                - id: ToD-AU
+                - type: 2
+          - nsd-id: management-service
+            external-links:               
+              - ext-id: SMF-orch
+              - ext-id: SMF-AN_SDN
+              - ext-id: SMF-TN_SDN
+              - ext-id: SMF-user
+            constituent_vnfd_
+              - vnfd:
+                - id: SMF-stack 
+                - type: 2						 
+              - vnfd:
+                - id: OSM
+                - type: 2
+              - vnfd:
+                - id: AN_SDN
+                - type: 2
+              - vnfd
+                - id: TN_SDN
+                - type: 2
+          
+          node-type:                         # description to the NFVIs used
+          - type: edge
+            node_id: region1
+            vim: 
+              - tenant: mvno-openstack
+              - url: http://mvno-openstack:5000/v3
+            resources:
+              - CPU: 15 vCPUs
+              - RAM: 128 RAM
+              - storage: 10 Tb
+            links:
+              - physnet: 0.6GB
+              - vlan: 1600
+              - ip-pool: 192.168.0.0/20
+
+          - type: edge
+            node_id: region2
+            vim: 
+              - tenant: mvno-openstack
+              - url: http://mvno-openstack:5000/v3
+            resources:
+              - CPU: 10 vCPUs
+              - RAM: 64 RAM
+              - storage: 10 Tb
+            Links:
+              - physnet: 1GB
+              - vlan: 1600
+              - ip-pool: 192.168.0.0/20
+        SLA:                         # description of SLAs expected to be applied in slice
+          - name: resource-optimization
+            data: CPU
+            threshold: GT            # values allowed Greater Than (GT) and Lower Than (LT)
+            action:
+              - nsd-id: service-ToD
+              - vnfd-id: ToD-EU 
+              - node-id: region1
+              - rule: optimize    # allowed options optimize (sharing/scale-out),scale-down
+          - name: resource-optimization
+            data: CPU
+            threshold: GT
+            action:
+              - nsd-id: service-ToD
+              - vnfd-id: ToD-AU 
+              - node-id: region2
+              - rule: optimize               
+        monitoring-type:          # definition of the type of metrics and servers used
+          - name: computer_resources
+            metric:
+              - type: computing
+              - data: [CPU, RAM]
+              - node-id: region1 
+              - nsd-id: service-ToD
+              - vnf:
+                  - id: ToD-EU
+            servers:
+              - name: Prometheus1
+                url: http://prometheus1:9090
+              - name: Visualizer1
+                url: http://visualizer1:3000
+          - name: computer_resources
+            metric:
+              - type: computing
+              - data: [CPU, RAM]
+              - node-id: region2 
+              - nsd-id: service-ToD
+              - vnf:
+                  - id: ToD-AU
+            servers:
+              - name: Prometheus2
+                url: http://prometheus2:9090
+              - name: Visualizer2
+                url: http://visualizer2:3000
+
