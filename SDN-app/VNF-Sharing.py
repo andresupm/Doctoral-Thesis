@@ -1,4 +1,4 @@
-#Loadbalancer
+#Load Balancer application for VNF-Sharing Scheme
 
 from ryu.base import app_manager
 from ryu.controller import ofp_event
@@ -175,8 +175,8 @@ class SimpleSwitch13(app_manager.RyuApp):
         # Hardcoding the stuff, as we already know the topology diagram.
         # Group table1
         # Receiver port3 (host connected), forward it to port1(switch) and Port2(switch)
-        LB_WEIGHT1 = 50 #percentage
-        LB_WEIGHT2 = 50 #percentage
+        LB_WEIGHT1 = 70 #percentage
+        LB_WEIGHT2 = 30 #percentage
 
         watch_port = ofproto_v1_3.OFPP_ANY
         watch_group = ofproto_v1_3.OFPQ_ALL
